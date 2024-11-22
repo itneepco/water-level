@@ -1,0 +1,11 @@
+.env
+
+# add certificate files to gitignore
+certs/neepco-spark.crt
+certs/neepco-spark.key
+
+node_modules/
+
+# add water level data to gitignore
+data/NEEPCO_MC_20241018100210.mis
+data/NEEPCO_NAFRA_20240921235143.mis
