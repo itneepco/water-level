@@ -2,8 +2,19 @@ import fs from 'fs';
 import path from 'path';
 
 export function getLatestFile(dir, location) {
-    const files = fs.readdirSync(dir).filter((file) =>
-       file.endsWith(".mis") && file.startsWith(location));
+    const files = fs.readdirSync(dir).filter((file) =>{
+      const fullPath = path.join(dir, file);
+      const stats = fs.statSync(fullPath);
+      
+      // Check if it's a file, matches the naming criteria, and is not empty
+      return (
+        file.endsWith(".mis") &&
+        file.startsWith(location) &&
+        stats.isFile() &&
+        stats.size > 0
+      );
+    });
+    
     if (files.length === 0) return null;
   
     // Sort by file creation time (or use timestamps in filenames if consistent)
@@ -14,7 +25,6 @@ export function getLatestFile(dir, location) {
     });
     return path.join(dir, sortedFiles[0]);
   }
-  
   // Function to parse the raw data file
   export function parseFileContent(content, location) {
     const lines = content.split("\n");  
